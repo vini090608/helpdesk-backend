@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+enum BusinessHour {
+  H08
+  H09 
+  H10
+  H11
+  H12
+  H13
+  H14
+  H15
+  H16
+  H17
+}
+
+enum CallStatus {
+  aberto
+  emAtendimento
+  encerrado
+}
+
+enum UserRole {
+  cliente
+  admin
+}
+
+model Technical{
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  password String
+
+  hour BusinessHour[]
+
+  calls Call[]
+
+  @@map("technicals")
+}
+
+model User{
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  password String
+
+  role UserRole @default(cliente)
+
+  calls Call[]
+
+  @@map("users")
+}
+
+model Service{
+  name String @unique
+  amount Float
+
+  calls Call[]
+
+  @@map("services")
+}
+
+model Call {
+  id          Int        @id @default(autoincrement())
+  title       String
+  describe    String
+  status      CallStatus
+
+  serviceAmount Float
+
+  clientId    Int      @map("client_id")
+  technicalId Int      @map("technical_id")
+  serviceName String   @map("service_name")
+
+  user      User      @relation(fields: [clientId], references: [id])
+  technical Technical @relation(fields: [technicalId], references: [id])
+  service   Service   @relation(fields: [serviceName], references: [name])
+
+  updatdAt  DateTime? @updatedAt() @map("updated_at")
+
+  @@map("calls")
+}
