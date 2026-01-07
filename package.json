@@ -1,0 +1,17 @@
+{
+  "name": "helpdesk-api",
+  "version": "1.0.0",
+  "main": "server.ts",
+  "scripts": {
+    "dev": "tsx --watch"
+  },
+  "author": "Vinicius Pereira",
+  "license": "ISC",
+  "description": "An API for management of client calls",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21"
+  }
+}
