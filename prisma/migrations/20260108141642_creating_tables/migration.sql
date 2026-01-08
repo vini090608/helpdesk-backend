@@ -5,7 +5,7 @@ CREATE TYPE "BusinessHour" AS ENUM ('H08', 'H09', 'H10', 'H11', 'H12', 'H13', 'H
 CREATE TYPE "CallStatus" AS ENUM ('aberto', 'emAtendimento', 'encerrado');
 
 -- CreateEnum
-CREATE TYPE "UserRole" AS ENUM ('cliente', 'admin');
+CREATE TYPE "Role" AS ENUM ('cliente', 'admin', 'technical');
 
 -- CreateTable
 CREATE TABLE "technicals" (
@@ -13,6 +13,7 @@ CREATE TABLE "technicals" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "role" "Role" NOT NULL DEFAULT 'technical',
     "hour" "BusinessHour"[],
 
     CONSTRAINT "technicals_pkey" PRIMARY KEY ("id")
@@ -24,7 +25,8 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "role" "UserRole" NOT NULL DEFAULT 'cliente',
+    "profile" TEXT,
+    "role" "Role" NOT NULL DEFAULT 'cliente',
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );

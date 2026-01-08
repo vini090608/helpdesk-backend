@@ -26,9 +26,10 @@ enum CallStatus {
   encerrado
 }
 
-enum UserRole {
+enum Role {
   cliente
   admin
+  technical
 }
 
 model Technical{
@@ -36,6 +37,7 @@ model Technical{
   name String
   email String @unique
   password String
+  role Role @default(technical)
 
   hour BusinessHour[]
 
@@ -49,8 +51,9 @@ model User{
   name String
   email String @unique
   password String
+  profile String?
 
-  role UserRole @default(cliente)
+  role Role @default(cliente)
 
   calls Call[]
 

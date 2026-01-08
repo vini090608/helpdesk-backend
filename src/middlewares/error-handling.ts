@@ -1,21 +1,16 @@
-import { AppError } from "@/utils/AppError";
-import { ErrorRequestHandler } from "express";
+import {Request, Response, NextFunction} from "express"
+import { AppError } from "../utils/AppError"
 import { ZodError } from "zod"
 
-export const errorHandling: ErrorRequestHandler = (error, request, response) => {
-    if (error instanceof AppError){
-        response.status(error.statusCode).json({message: error.message})
-        return
+export function errorHandling
+(error: any, request: Request, response: Response, next: NextFunction){
+    if(error instanceof AppError){
+        return response.status(error.statusCode).json({message: error.message})
     }
 
     if(error instanceof ZodError){
-        response.status(400).json({
-            message:"validation error",
-            issues: error.format(),
-        })
-        return
+        return response.status(400).json({message: "validation error", issues: error.format()})
     }
 
-    response.status(500).json({message: error.message})
-    return
+    return response.status(500).json({message: error.message})
 }

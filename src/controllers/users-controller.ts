@@ -1,7 +1,103 @@
-import { Request, Response } from "express"
+import { AppError } from "@/utils/AppError";
+import { Request, Response } from "express";
+import {prisma} from "@/database/prisma"
+import { hash } from "bcrypt";
+import { z } from "zod"
 
-export class UsersController {
-    create(req: Request, res: Response){
-        return res.json({ message: "Users OK" })
+export class UsersController{
+    async create(req: Request, res: Response){
+        const bodySchema = z.object({
+            name: z.string().min(2, {message: "Put a valid name"}),
+            email: z.string().email(),
+            password: z.string().min(6, {message: "Put a valid password"})
+        })
+
+        const {name, email, password} = bodySchema.parse(req.body)
+
+        const userWithSameEmail = await prisma.user.findFirst({where: {email}})
+
+        if(userWithSameEmail){
+            throw new AppError("User with same email already exists")
+        }
+
+        const hashedPassword = await hash(password, 8)
+
+        const user = await prisma.user.create({
+            data: {
+                name, email, password: hashedPassword
+            }
+        })
+
+        const { password: _, ...userWithoutPassword} = user
+
+        return res.status(201).json(userWithoutPassword)
+    }
+
+    async index(req: Request, res: Response){
+        const users = await prisma.user.findMany({
+            select: {id: true, name: true, email: true, role: true}
+        })
+
+        return res.json(users)
+    }
+
+    async show(req: Request, res: Response){
+        const paramsSchema = z.object({
+            id: z.number()
+        })
+
+        const {id} = paramsSchema.parse(req.params)
+
+        const user = await prisma.user.findUnique({
+            where:{id},
+        })
+
+        return res.json(user)
+    }
+
+    async update(req: Request, res: Response){
+        const paramsSchema = z.object({
+            id: z.number()
+        })
+
+        const bodySchema = z.object({
+            password: z.string(),
+            profile: z.string()
+        })
+
+        const {id} = paramsSchema.parse(req.params)
+        const {password, profile} = bodySchema.parse(req.body)
+
+
+        if(password ==="" || password == null){
+            throw new AppError("please change something to update", 400)
+        }
+
+        if(profile ==="" || profile == null){
+            throw new AppError("please change something to update", 400)
+        }
+
+        const user = await prisma.user.update({
+            data:{
+                password, profile
+            },
+            where:{
+                id
+            }
+        })
+
+        return res.json({message: "update realised", user})
+    }
+
+    async remove(req: Request, res: Response ){
+        const paramsSchema = z.object({
+            id: z.number()
+        })
+
+        const {id} = paramsSchema.parse(req.params)
+
+        const user = await prisma.user.delete({where:{id}})
+
+        return res.status(202).json({message: "User deleted sucessfully"})
     }
 }
