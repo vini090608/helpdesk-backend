@@ -12,8 +12,6 @@ enum BusinessHour {
   H09 
   H10
   H11
-  H12
-  H13
   H14
   H15
   H16

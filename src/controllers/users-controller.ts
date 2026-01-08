@@ -57,23 +57,19 @@ export class UsersController{
 
     async update(req: Request, res: Response){
         const paramsSchema = z.object({
-            id: z.number()
+            id: z.coerce.number()
         })
 
         const bodySchema = z.object({
-            password: z.string(),
-            profile: z.string()
+            password: z.string().optional(),
+            profile: z.string().optional()
         })
 
         const {id} = paramsSchema.parse(req.params)
         const {password, profile} = bodySchema.parse(req.body)
 
 
-        if(password ==="" || password == null){
-            throw new AppError("please change something to update", 400)
-        }
-
-        if(profile ==="" || profile == null){
+        if(!password && !profile && profile == null){
             throw new AppError("please change something to update", 400)
         }
 
@@ -86,7 +82,7 @@ export class UsersController{
             }
         })
 
-        return res.json({message: "update realised", user})
+        return res.json({message: "update realised"})
     }
 
     async remove(req: Request, res: Response ){
