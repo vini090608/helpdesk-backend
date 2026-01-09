@@ -8,7 +8,7 @@ import { verifyUserAuthorization } from "@/middlewares/verifyUserAuthorization";
 const technicalsRoutes = Router()
 const technicalsController = new TechnicalsController()
 
-technicalsRoutes.use(verifyUserAuthorization(["technical"]))
+technicalsRoutes.use( ensureAuthenticated, verifyUserAuthorization(["technical"]))
 
 technicalsRoutes.post("/", technicalsController.create)
 technicalsRoutes.get("/", ensureAuthenticated, verifyUserAuthorization(["admin"]),technicalsController.index)

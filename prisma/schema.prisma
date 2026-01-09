@@ -19,9 +19,14 @@ enum BusinessHour {
 }
 
 enum CallStatus {
-  aberto
-  emAtendimento
-  encerrado
+  open
+  processing
+  ended
+}
+
+enum ServiceStatus {
+  active
+  inative
 }
 
 enum Role {
@@ -63,6 +68,7 @@ model User{
 model Service{
   name String @unique
   amount Float
+  status ServiceStatus
 
   calls Call[]
 
