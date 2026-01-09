@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { CallsController } from "@/controllers/calls-controller";
+
 import { ensureAuthenticated } from "@/middlewares/ensure-authenticated";
 import { verifyUserAuthorization } from "@/middlewares/verifyUserAuthorization";
 

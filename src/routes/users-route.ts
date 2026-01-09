@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { UsersController } from "@/controllers/users-controller";
+
 import { ensureAuthenticated } from "@/middlewares/ensure-authenticated";
 import { verifyUserAuthorization } from "@/middlewares/verifyUserAuthorization";
 

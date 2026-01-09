@@ -68,7 +68,7 @@ model User{
 model Service{
   name String @unique
   amount Float
-  status ServiceStatus
+  status ServiceStatus? @default(inative)
 
   calls Call[]
 
