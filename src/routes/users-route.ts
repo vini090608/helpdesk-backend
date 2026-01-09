@@ -8,6 +8,9 @@ const usersRoutes = Router()
 const usersController = new UsersController()
 
 usersRoutes.post("/", usersController.create)
+
+usersRoutes.use(verifyUserAuthorization(["client"]))
+
 usersRoutes.get("/", ensureAuthenticated, verifyUserAuthorization(["admin"]),usersController.index)
 usersRoutes.get("/:id", usersController.show)
 usersRoutes.patch("/:id", usersController.update)
