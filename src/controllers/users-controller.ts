@@ -43,7 +43,7 @@ export class UsersController{
 
     async show(req: Request, res: Response){
         const paramsSchema = z.object({
-            id: z.number()
+            id: z.coerce.number()
         })
 
         const {id} = paramsSchema.parse(req.params)
@@ -87,7 +87,7 @@ export class UsersController{
 
     async remove(req: Request, res: Response ){
         const paramsSchema = z.object({
-            id: z.number()
+            id: z.coerce.number()
         })
 
         const {id} = paramsSchema.parse(req.params)

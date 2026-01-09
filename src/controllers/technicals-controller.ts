@@ -43,7 +43,7 @@ export class TechnicalsController{
 
     async show(req: Request, res: Response){
         const paramsSchema = z.object({
-            id: z.number()
+            id: z.coerce.number()
         })
 
         const {id} = paramsSchema.parse(req.params)
@@ -89,7 +89,7 @@ export class TechnicalsController{
 
     async remove(req: Request, res: Response ){
         const paramsSchema = z.object({
-            id: z.number()
+            id: z.coerce.number()
         })
 
         const {id} = paramsSchema.parse(req.params)
