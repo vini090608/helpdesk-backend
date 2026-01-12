@@ -9,10 +9,11 @@ export class UsersController{
         const bodySchema = z.object({
             name: z.string().min(2, {message: "Put a valid name"}),
             email: z.string().email(),
-            password: z.string().min(6, {message: "Put a valid password"})
+            password: z.string().min(6, {message: "Put a valid password"}),
+            role: z.enum(["client", "technical", "admin"]).optional()
         })
 
-        const {name, email, password} = bodySchema.parse(req.body)
+        const {name, email, password, role} = bodySchema.parse(req.body)
 
         const userWithSameEmail = await prisma.user.findFirst({where: {email}})
 
@@ -24,7 +25,7 @@ export class UsersController{
 
         const user = await prisma.user.create({
             data: {
-                name, email, password: hashedPassword
+                name, email, password: hashedPassword, role
             }
         })
 
@@ -62,27 +63,30 @@ export class UsersController{
 
         const bodySchema = z.object({
             password: z.string().optional(),
-            profile: z.string().optional()
+            profile: z.string().optional(),
+            hour: z.enum(["H08", "H09", "H10", "H11", "H14", "H15", "H16", "H17"]).nullable().optional()
         })
 
         const {id} = paramsSchema.parse(req.params)
-        const {password, profile} = bodySchema.parse(req.body)
+        const {password, profile, hour} = bodySchema.parse(req.body)
 
 
-        if(!password && !profile && profile == null){
-            throw new AppError("please change something to update", 400)
+        if (!password && !profile && hour === undefined) {
+            throw new AppError("Please change something to update", 400)
         }
 
+        const data: any = {}
+
+        if (password !== undefined) data.password = password
+        if (profile !== undefined) data.profile = profile
+        if (hour !== undefined) data.hour = hour ? [hour] : []
+
         const user = await prisma.user.update({
-            data:{
-                password, profile
-            },
-            where:{
-                id
-            }
+            where: { id },
+            data
         })
 
-        return res.json({message: "update realised"})
+        return res.json({message: "update realised", user})
     }
 
     async remove(req: Request, res: Response ){

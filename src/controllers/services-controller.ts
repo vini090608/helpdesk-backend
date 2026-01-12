@@ -39,26 +39,27 @@ export class ServicesController{
         })
 
          const bodySchema = z.object({
-            status: z.enum(["active", "inative"])
+            serviceName: z.string().optional(),
+            amount: z.number().optional()
         })
 
         const {name} = paramsSchema.parse(req.params)
-        const { status } = bodySchema.parse(req.body)
+        const { serviceName, amount } = bodySchema.parse(req.body)
 
-        if(!status){
+        if(!name || !amount){
             throw new AppError("Plese change something to update", 400)
         }
 
-        const service = await prisma.service.update({
+        const service = await prisma.service.updateMany({
             data: {
-                status
+                name: serviceName, amount
             },
             where:{
                 name
             }
         })
 
-        return res.json({message: "update realised", service})
+        return res.json({message: "update realised"})
     }
 
     async remove(req:Request, res: Response){
@@ -75,6 +76,6 @@ export class ServicesController{
             }
         })
 
-        return res.status(202).json({message: "User deleted sucessfully", service})
+        return res.status(202).json({message: "Service deleted sucessfully"})
     }
 }

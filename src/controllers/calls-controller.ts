@@ -11,12 +11,11 @@ export class CallsController{
             status: z.enum(["open", "processing", "ended"]),
             serviceAmount: z.number().positive(),
             client_id: z.number(),
-            technical_id: z.number(),
             service_name: z.string()
             
         })
 
-        const {title, describe, status, serviceAmount,client_id, technical_id, service_name} = bodySchema.parse(req.body)
+        const {title, describe, status, serviceAmount,client_id, service_name} = bodySchema.parse(req.body)
 
         if(status === "ended"){
             throw new AppError("This call has ended", 401)
@@ -26,7 +25,6 @@ export class CallsController{
             data: {
                 title, describe, status, serviceAmount,
                 clientId: client_id, 
-                technicalId: technical_id , 
                 serviceName: service_name
             }
         })
@@ -39,14 +37,13 @@ export class CallsController{
         select: {
             title:true, describe:true, status:true, serviceAmount:true,
             user: {select: {name: true}},
-            technical: {select: {name: true}},
         },
      })
         
      return res.json(calls)
     }
 
-    async showC(req: Request, res: Response){
+    async show(req: Request, res: Response){
         const paramsSchema = z.object({
             id: z.coerce.number()
         })
@@ -58,26 +55,6 @@ export class CallsController{
             select: {
                 title:true, describe:true, status:true, serviceAmount:true,
                 user: {select: {name: true}},
-                technical: {select: {name: true}},
-            },
-        })
-
-        return res.json(calls)
-    }
-
-    async showT(req: Request, res: Response){
-        const paramsSchema = z.object({
-            id: z.coerce.number()
-        })
-
-        const {id} = paramsSchema.parse(req.params)
-
-        const calls = await prisma.call.findMany({
-            where: {id},
-            select: {
-                title:true, describe:true, status:true, serviceAmount:true,
-                user: {select: {name: true}},
-                technical: {select: {name: true}},
             },
         })
 
@@ -97,7 +74,7 @@ export class CallsController{
 
         const {status} = bodySchema.parse(req.body)
 
-        const call = await prisma.call.update({
+        const call = await prisma.call.updateMany({
             data:{
                 status
             },

@@ -13,7 +13,7 @@ servicesRoutes.use(ensureAuthenticated, verifyUserAuthorization(["admin"]))
 servicesRoutes.post("/", servicesController.create)
 servicesRoutes.get("/", servicesController.index)
 servicesRoutes.patch("/:name", servicesController.update)
-servicesRoutes.patch("/:name", servicesController.remove)
+servicesRoutes.delete("/:name", servicesController.remove)
 
 export {servicesRoutes}
 

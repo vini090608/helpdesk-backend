@@ -5,7 +5,6 @@ import { SessionsController } from "@/controllers/sessions-controller";
 const sessionsRoutes = Router()
 const sessionsController = new SessionsController()
 
-sessionsRoutes.post("/", sessionsController.createU)
-sessionsRoutes.post("/", sessionsController.createT)
+sessionsRoutes.post("/", sessionsController.create)
 
 export {sessionsRoutes}

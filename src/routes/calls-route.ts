@@ -12,8 +12,7 @@ callsRoutes.use(ensureAuthenticated, verifyUserAuthorization(["admin"]))
 
 callsRoutes.post("/", callsController.create)
 callsRoutes.get("/", ensureAuthenticated, callsController.index)
-callsRoutes.get("/:id", ensureAuthenticated, verifyUserAuthorization(["client"]), callsController.showC)
-callsRoutes.get("/:id", ensureAuthenticated, verifyUserAuthorization(["technical"]), callsController.showT)
+callsRoutes.get("/:id", callsController.show)
 callsRoutes.patch("/:id", ensureAuthenticated, callsController.update)
 callsRoutes.delete("/:id", ensureAuthenticated, callsController.remove)
 
