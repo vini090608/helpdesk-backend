@@ -8,12 +8,13 @@ import { verifyUserAuthorization } from "@/middlewares/verifyUserAuthorization";
 const technicalsRoutes = Router()
 const technicalsController = new TechnicalsController()
 
-technicalsRoutes.use( ensureAuthenticated, verifyUserAuthorization(["technical"]))
-
 technicalsRoutes.post("/", technicalsController.create)
-technicalsRoutes.get("/", ensureAuthenticated, verifyUserAuthorization(["admin"]),technicalsController.index)
+
+technicalsRoutes.use(ensureAuthenticated, verifyUserAuthorization(["admin", "technical"]))
+
+technicalsRoutes.get("/",technicalsController.index)
 technicalsRoutes.get("/:id", technicalsController.show)
-technicalsRoutes.patch("/:id", verifyUserAuthorization(["admin"]), technicalsController.update)
+technicalsRoutes.patch("/:id", technicalsController.update)
 technicalsRoutes.delete("/:id", technicalsController.remove)
 
 export {technicalsRoutes}
