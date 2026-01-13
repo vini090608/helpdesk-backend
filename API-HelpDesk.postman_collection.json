@@ -4,7 +4,7 @@
 		"name": "API-HelpDesk",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "50516847",
-		"_collection_link": "https://viniciuspereiraassuncao-2904872.postman.co/workspace/Vinicius-Pereira-Assun%25C3%25A7%25C3%25A3o's-Wor~85fb1c8b-1fb3-4518-85cb-2c75e43e5027/collection/50516847-a801c478-d994-40cd-b924-57280c218bc4?action=share&source=collection_link&creator=50516847"
+		"_collection_link": "https://viniciuspereiraassuncao-2904872.postman.co/workspace/Vinicius-Pereira-Assun%C3%A7%C3%A3o's-Wor~85fb1c8b-1fb3-4518-85cb-2c75e43e5027/collection/50516847-a801c478-d994-40cd-b924-57280c218bc4?action=share&source=collection_link&creator=50516847"
 	},
 	"item": [
 		{
@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Breno Siriri\",\n    \"email\": \"breno.s@gmail.com\",\n    \"password\": \"123456\"\n}",
+							"raw": "{\n    \"name\": \"Gabriel Técnico\",\n    \"email\": \"gabriel.tech@gmail.com\",\n    \"password\": \"123456\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -44,7 +44,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiY2xpZW50IiwiaWF0IjoxNzY3OTcyMzMxLCJleHAiOjE3NjgwNTg3MzEsInN1YiI6IjIifQ.W6wjQyQn6aPuVG-Uub-hKT2I61Z3Xc7eB7RiCCRDSCA",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjgyMjYxNTIsImV4cCI6MTc2ODMxMjU1Miwic3ViIjoiMSJ9.TX3VVJIFlu7IIlcRswmGAkzk764NpD5gPnsZn5MDQwg",
 									"type": "string"
 								}
 							]
@@ -94,11 +94,21 @@
 				{
 					"name": "Update",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NjgyMzAyNjQsImV4cCI6MTc2ODMxNjY2NCwic3ViIjoiMSJ9.ZdUYbX4UFA1rGNunzpn1ZBHpNRNKJBJYV5nbKdNF6z0",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"password\": \"123456\"\n}",
+							"raw": "{\n    \"hour\": [\"H08\", \"H09\", \"H10\"]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -131,115 +141,6 @@
 							"path": [
 								"users",
 								"2"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Technical",
-			"item": [
-				{
-					"name": "Create",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Vinicius Técnico\",\n    \"email\": \"vinicius.ec@gmail.com\",\n    \"password\": \"123456\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/technicals",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"technicals"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Index",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASE_URL}}/technicals",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"technicals"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Show",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASE_URL}}/technicals/",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"technicals",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update",
-					"request": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"password\": \"12345678\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/technicals",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"technicals"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{BASE_URL}}/technicals",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"technicals"
 							]
 						}
 					},
@@ -294,7 +195,7 @@
 					"response": []
 				},
 				{
-					"name": "Show for Clients",
+					"name": "Show",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -306,24 +207,6 @@
 							"path": [
 								"calls",
 								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Show for Technicals",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASE_URL}}/calls/2",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"calls",
-								"2"
 							]
 						}
 					},
@@ -464,7 +347,7 @@
 			"name": "Sessions",
 			"item": [
 				{
-					"name": "Create",
+					"name": "LogIn",
 					"request": {
 						"method": "POST",
 						"header": [],

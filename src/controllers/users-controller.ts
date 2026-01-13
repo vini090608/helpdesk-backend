@@ -10,10 +10,11 @@ export class UsersController{
             name: z.string().min(2, {message: "Put a valid name"}),
             email: z.string().email(),
             password: z.string().min(6, {message: "Put a valid password"}),
-            role: z.enum(["client", "technical", "admin"]).optional()
+            role: z.enum(["client", "technical", "admin"]).optional(),
+            hour: z.array(z.enum(["H08", "H09", "H10", "H11", "H12", "H13", "H14", "H15", "H16", "H17", "H18", "H19", "H20", "H21", "H22"])).optional()
         })
 
-        const {name, email, password, role} = bodySchema.parse(req.body)
+        const {name, email, password, role, hour} = bodySchema.parse(req.body)
 
         const userWithSameEmail = await prisma.user.findFirst({where: {email}})
 
@@ -25,7 +26,7 @@ export class UsersController{
 
         const user = await prisma.user.create({
             data: {
-                name, email, password: hashedPassword, role
+                name, email, password: hashedPassword, role, hour
             }
         })
 
@@ -64,7 +65,7 @@ export class UsersController{
         const bodySchema = z.object({
             password: z.string().optional(),
             profile: z.string().optional(),
-            hour: z.enum(["H08", "H09", "H10", "H11", "H14", "H15", "H16", "H17"]).nullable().optional()
+            hour: z.array(z.enum(["H08", "H09", "H10", "H11", "H12", "H13", "H14", "H15", "H16", "H17", "H18", "H19", "H20", "H21", "H22"])).optional()
         })
 
         const {id} = paramsSchema.parse(req.params)
@@ -75,15 +76,13 @@ export class UsersController{
             throw new AppError("Please change something to update", 400)
         }
 
-        const data: any = {}
-
-        if (password !== undefined) data.password = password
-        if (profile !== undefined) data.profile = profile
-        if (hour !== undefined) data.hour = hour ? [hour] : []
+        
 
         const user = await prisma.user.update({
             where: { id },
-            data
+            data: {
+                password, profile, hour
+            }
         })
 
         return res.json({message: "update realised", user})
