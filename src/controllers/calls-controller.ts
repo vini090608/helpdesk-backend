@@ -11,11 +11,12 @@ export class CallsController{
             status: z.enum(["open", "processing", "ended"]),
             serviceAmount: z.number().positive(),
             client_id: z.number(),
+            technical_id: z.number(),
             service_name: z.string()
             
         })
 
-        const {title, describe, status, serviceAmount,client_id, service_name} = bodySchema.parse(req.body)
+        const {title, describe, status, serviceAmount,client_id, technical_id,service_name} = bodySchema.parse(req.body)
 
         if(status === "ended"){
             throw new AppError("This call has ended", 401)
@@ -25,6 +26,7 @@ export class CallsController{
             data: {
                 title, describe, status, serviceAmount,
                 clientId: client_id, 
+                TechnicalId: technical_id,
                 serviceName: service_name
             }
         })
@@ -36,7 +38,8 @@ export class CallsController{
      const calls = await prisma.call.findMany({
         select: {
             title:true, describe:true, status:true, serviceAmount:true,
-            user: {select: {name: true}},
+            client: {select: {name: true}},
+            technical: {select: {name: true}},
         },
      })
         
@@ -54,7 +57,8 @@ export class CallsController{
             where: {id},
             select: {
                 title:true, describe:true, status:true, serviceAmount:true,
-                user: {select: {name: true}},
+                client: {select: {name: true}},
+                technical: {select: {name: true}},
             },
         })
 

@@ -52,7 +52,8 @@ model User{
   role Role @default(client)
   hour BusinessHour[]
 
-  calls Call[]
+  clientCall Call[] @relation("client")
+  technicalCall Call[] @relation("technical")
 
   @@map("users")
 }
@@ -76,9 +77,11 @@ model Call {
   serviceAmount Float
 
   clientId    Int      @map("client_id")
+  TechnicalId Int        @map("technical_id")
   serviceName String   @map("service_name")
 
-  user      User      @relation(fields: [clientId], references: [id])
+  client      User      @relation("client" ,fields: [clientId], references: [id])
+  technical      User      @relation( "technical",fields: [TechnicalId], references: [id])
   service   Service   @relation(fields: [serviceName], references: [name])
 
   updatdAt  DateTime? @updatedAt() @map("updated_at")
