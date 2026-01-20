@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "BusinessHour" AS ENUM ('H08', 'H09', 'H10', 'H11', 'H14', 'H15', 'H16', 'H17');
+CREATE TYPE "BusinessHour" AS ENUM ('H08', 'H09', 'H10', 'H11', 'H12', 'H13', 'H14', 'H15', 'H16', 'H17', 'H18', 'H19', 'H20', 'H21', 'H22');
 
 -- CreateEnum
 CREATE TYPE "CallStatus" AS ENUM ('open', 'processing', 'ended');
@@ -11,19 +11,6 @@ CREATE TYPE "ServiceStatus" AS ENUM ('active', 'inative');
 CREATE TYPE "Role" AS ENUM ('client', 'admin', 'technical');
 
 -- CreateTable
-CREATE TABLE "technicals" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "role" "Role" NOT NULL DEFAULT 'technical',
-    "profile" TEXT,
-    "hour" "BusinessHour"[],
-
-    CONSTRAINT "technicals_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -31,6 +18,7 @@ CREATE TABLE "users" (
     "password" TEXT NOT NULL,
     "profile" TEXT,
     "role" "Role" NOT NULL DEFAULT 'client',
+    "hour" "BusinessHour"[],
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -47,7 +35,7 @@ CREATE TABLE "calls" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "describe" TEXT NOT NULL,
-    "status" "CallStatus" NOT NULL,
+    "status" "CallStatus" NOT NULL DEFAULT 'open',
     "serviceAmount" DOUBLE PRECISION NOT NULL,
     "client_id" INTEGER NOT NULL,
     "technical_id" INTEGER NOT NULL,
@@ -56,9 +44,6 @@ CREATE TABLE "calls" (
 
     CONSTRAINT "calls_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "technicals_email_key" ON "technicals"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
@@ -70,7 +55,7 @@ CREATE UNIQUE INDEX "services_name_key" ON "services"("name");
 ALTER TABLE "calls" ADD CONSTRAINT "calls_client_id_fkey" FOREIGN KEY ("client_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "calls" ADD CONSTRAINT "calls_technical_id_fkey" FOREIGN KEY ("technical_id") REFERENCES "technicals"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "calls" ADD CONSTRAINT "calls_technical_id_fkey" FOREIGN KEY ("technical_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "calls" ADD CONSTRAINT "calls_service_name_fkey" FOREIGN KEY ("service_name") REFERENCES "services"("name") ON DELETE RESTRICT ON UPDATE CASCADE;

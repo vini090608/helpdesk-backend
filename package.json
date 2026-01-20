@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "tsx watch --env-file .env src/server.ts"
     },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "author": "Vinicius Pereira",
   "license": "ISC",
   "description": "An API for management of client calls",
