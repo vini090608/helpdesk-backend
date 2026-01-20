@@ -23,14 +23,14 @@ export class SessionsController{
 
         if(!user){
             console.log(error)
-            throw new AppError("Invalid email or password u", 401)
+            throw new AppError("Invalid email", 401)
         }
 
         const passwordMatched = await compare(password, user.password)
 
         if(!passwordMatched){
             console.log(error)
-            throw new AppError("Invalid email or password u", 401)
+            throw new AppError("Invalid password", 401)
         }
 
         const {secret, expiresIn} = authConfig.jwt 
