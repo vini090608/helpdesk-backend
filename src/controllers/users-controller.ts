@@ -32,7 +32,7 @@ export class UsersController{
 
         const { password: _, ...userWithoutPassword} = user
 
-        return res.status(201).json(userWithoutPassword)
+        return res.status(201).json({user:userWithoutPassword})
     }
 
     async index(req: Request, res: Response){
@@ -54,7 +54,7 @@ export class UsersController{
             where:{id},
         })
 
-        return res.json(user)
+        return res.json({user: user})
     }
 
     async update(req: Request, res: Response){

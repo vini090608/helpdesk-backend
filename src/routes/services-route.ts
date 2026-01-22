@@ -8,10 +8,10 @@ import { verifyUserAuthorization } from "@/middlewares/verifyUserAuthorization";
 const servicesRoutes = Router()
 const servicesController = new ServicesController()
 
-servicesRoutes.use(ensureAuthenticated, verifyUserAuthorization(["admin"]))
-
-servicesRoutes.post("/", servicesController.create)
 servicesRoutes.get("/", servicesController.index)
+
+servicesRoutes.use(ensureAuthenticated, verifyUserAuthorization(["admin"]))
+servicesRoutes.post("/", servicesController.create)
 servicesRoutes.patch("/:name", servicesController.update)
 servicesRoutes.delete("/:name", servicesController.remove)
 
