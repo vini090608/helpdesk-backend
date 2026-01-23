@@ -27,7 +27,7 @@ CREATE TABLE "users" (
 CREATE TABLE "services" (
     "name" TEXT NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
-    "status" "ServiceStatus" DEFAULT 'inative'
+    "status" "ServiceStatus" DEFAULT 'active'
 );
 
 -- CreateTable
@@ -35,10 +35,10 @@ CREATE TABLE "calls" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL,
     "describe" TEXT NOT NULL,
-    "status" "CallStatus" NOT NULL DEFAULT 'open',
-    "serviceAmount" DOUBLE PRECISION NOT NULL,
+    "status" "CallStatus" DEFAULT 'open',
+    "service_amount" DOUBLE PRECISION NOT NULL,
     "client_id" INTEGER NOT NULL,
-    "technical_id" INTEGER NOT NULL,
+    "technical_id" INTEGER,
     "service_name" TEXT NOT NULL,
     "updated_at" TIMESTAMP(3),
 
@@ -55,7 +55,7 @@ CREATE UNIQUE INDEX "services_name_key" ON "services"("name");
 ALTER TABLE "calls" ADD CONSTRAINT "calls_client_id_fkey" FOREIGN KEY ("client_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "calls" ADD CONSTRAINT "calls_technical_id_fkey" FOREIGN KEY ("technical_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "calls" ADD CONSTRAINT "calls_technical_id_fkey" FOREIGN KEY ("technical_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "calls" ADD CONSTRAINT "calls_service_name_fkey" FOREIGN KEY ("service_name") REFERENCES "services"("name") ON DELETE RESTRICT ON UPDATE CASCADE;
