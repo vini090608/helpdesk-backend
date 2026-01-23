@@ -8,8 +8,6 @@ import { verifyUserAuthorization } from "@/middlewares/verifyUserAuthorization";
 const callsRoutes = Router()
 const callsController = new CallsController()
 
-callsRoutes.use(ensureAuthenticated, verifyUserAuthorization(["admin"]))
-
 callsRoutes.post("/", callsController.create)
 callsRoutes.get("/", ensureAuthenticated, callsController.index)
 callsRoutes.get("/:id", callsController.show)

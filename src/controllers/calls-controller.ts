@@ -8,15 +8,15 @@ export class CallsController{
         const bodySchema = z.object({
             title: z.string(),
             describe: z.string(),
-            status: z.enum(["open", "processing", "ended"]),
-            serviceAmount: z.number().positive(),
+            status: z.enum(["open", "processing", "ended"]).optional(),
+            service_amount: z.number().positive(),
             client_id: z.number(),
-            technical_id: z.number(),
+            technical_id: z.number().optional(),
             service_name: z.string()
             
         })
 
-        const {title, describe, status, serviceAmount,client_id, technical_id,service_name} = bodySchema.parse(req.body)
+        const {title, describe, status, service_amount,client_id, technical_id,service_name} = bodySchema.parse(req.body)
 
         if(status === "ended"){
             throw new AppError("This call has ended", 401)
@@ -24,7 +24,8 @@ export class CallsController{
 
         const calls = await prisma.call.create({
             data: {
-                title, describe, status, serviceAmount,
+                title, describe, status, 
+                serviceAmount: service_amount,
                 clientId: client_id, 
                 TechnicalId: technical_id,
                 serviceName: service_name
@@ -71,7 +72,9 @@ export class CallsController{
         })
 
         const bodySchema = z.object({
-            status: z.enum(["open", "processing", "ended"]),
+            status: z.enum(["open", "processing", "ended"]).optional(),
+            technical_id: z.number().optional(),
+
         })
 
         const {id} = paramsSchema.parse(req.params)
