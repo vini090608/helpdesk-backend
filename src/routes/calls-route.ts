@@ -9,8 +9,11 @@ const callsRoutes = Router()
 const callsController = new CallsController()
 
 callsRoutes.post("/", callsController.create)
-callsRoutes.get("/", ensureAuthenticated, callsController.index)
+
+callsRoutes.get("/option/:id", callsController.find)
 callsRoutes.get("/:id", callsController.show)
+
+callsRoutes.get("/", ensureAuthenticated, verifyUserAuthorization(["admin"]), callsController.index)
 callsRoutes.patch("/:id", ensureAuthenticated, callsController.update)
 callsRoutes.delete("/:id", ensureAuthenticated, callsController.remove)
 

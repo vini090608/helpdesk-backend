@@ -47,6 +47,25 @@ export class CallsController{
      return res.json(calls)
     }
 
+    async find(req: Request, res: Response){
+        const paramsSchema = z.object({
+                id: z.coerce.number()
+            })
+
+        const {id} = paramsSchema.parse(req.params)
+
+        const calls = await prisma.call.findMany({
+            where: {clientId: id},
+            select: {
+                title:true, describe:true, status:true, serviceAmount:true,
+                client: {select: {name: true}},
+                technical: {select: {name: true}},
+            },
+     })
+        
+     return res.json(calls)
+    }
+
     async show(req: Request, res: Response){
         const paramsSchema = z.object({
             id: z.coerce.number()
@@ -54,7 +73,7 @@ export class CallsController{
 
         const {id} = paramsSchema.parse(req.params)
 
-        const calls = await prisma.call.findMany({
+        const calls = await prisma.call.findUnique({
             where: {id},
             select: {
                 title:true, describe:true, status:true, serviceAmount:true,
@@ -79,11 +98,12 @@ export class CallsController{
 
         const {id} = paramsSchema.parse(req.params)
 
-        const {status} = bodySchema.parse(req.body)
+        const {status, technical_id} = bodySchema.parse(req.body)
 
         const call = await prisma.call.updateMany({
             data:{
-                status
+                status,
+                TechnicalId: technical_id,
             },
             where:{
                 id
