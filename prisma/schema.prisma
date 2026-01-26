@@ -84,7 +84,7 @@ model Call {
   technical      User?      @relation( "technical",fields: [TechnicalId], references: [id])
   serviceNameCall   Service   @relation("serviceName", fields: [serviceName], references: [name])
 
-  updatdAt  DateTime? @updatedAt() @map("updated_at")
+  updatedAt  DateTime? @updatedAt() @map("updated_at")
 
   @@map("calls")
 }

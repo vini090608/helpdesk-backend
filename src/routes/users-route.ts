@@ -10,11 +10,11 @@ const usersController = new UsersController()
 
 usersRoutes.post("/", usersController.create)
 
-usersRoutes.use(ensureAuthenticated, verifyUserAuthorization(["admin", "client"]),)
+usersRoutes.use(ensureAuthenticated)
 
-usersRoutes.get("/", usersController.index)
+usersRoutes.get("/", verifyUserAuthorization(["admin"]), usersController.index)
 usersRoutes.get("/:id", usersController.show)
 usersRoutes.patch("/:id", usersController.update)
-usersRoutes.delete("/:id", usersController.remove)
+usersRoutes.delete("/:id", verifyUserAuthorization(["admin"]),usersController.remove)
 
 export {usersRoutes}

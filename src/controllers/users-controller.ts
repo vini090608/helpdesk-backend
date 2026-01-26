@@ -63,16 +63,18 @@ export class UsersController{
         })
 
         const bodySchema = z.object({
+            name: z.string().optional(),
+            email: z.string().optional(),
             password: z.string().optional(),
             profile: z.string().optional(),
             hour: z.array(z.enum(["H08", "H09", "H10", "H11", "H12", "H13", "H14", "H15", "H16", "H17", "H18", "H19", "H20", "H21", "H22"])).optional()
         })
 
         const {id} = paramsSchema.parse(req.params)
-        const {password, profile, hour} = bodySchema.parse(req.body)
+        const {name, email, password, profile, hour} = bodySchema.parse(req.body)
 
 
-        if (!password && !profile && hour === undefined) {
+        if (!name && !email && !password && !profile && hour === undefined) {
             throw new AppError("Please change something to update", 400)
         }
 
@@ -81,7 +83,7 @@ export class UsersController{
         const user = await prisma.user.update({
             where: { id },
             data: {
-                password, profile, hour
+                name, email, password, profile, hour
             }
         })
 
