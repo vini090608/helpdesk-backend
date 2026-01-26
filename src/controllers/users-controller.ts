@@ -37,10 +37,18 @@ export class UsersController{
 
     async index(req: Request, res: Response){
         const users = await prisma.user.findMany({
+            select: {id: true, name: true, email: true, role: true, hour: true}
+        })
+        const clients = await prisma.user.findMany({
+            where:{role: "client"},
             select: {id: true, name: true, email: true, role: true}
         })
+        const technicals = await prisma.user.findMany({
+            where:{role: "technical"},
+            select: {id: true, name: true, email: true, role: true, hour: true}
+        })
 
-        return res.json(users)
+        return res.json({users: users, clients, technicals })
     }
 
     async show(req: Request, res: Response){

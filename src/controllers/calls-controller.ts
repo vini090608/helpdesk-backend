@@ -38,7 +38,7 @@ export class CallsController{
     async index(req: Request, res: Response){
      const calls = await prisma.call.findMany({
         select: {
-            title:true, describe:true, status:true, serviceAmount:true, updatedAt: true,
+            id:true, title:true, describe:true, status:true, serviceName:true, serviceAmount:true, updatedAt: true,
             client: {select: {name: true}},
             technical: {select: {name: true}},
         },
