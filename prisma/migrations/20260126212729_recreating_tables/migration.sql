@@ -5,7 +5,7 @@ CREATE TYPE "BusinessHour" AS ENUM ('H08', 'H09', 'H10', 'H11', 'H12', 'H13', 'H
 CREATE TYPE "CallStatus" AS ENUM ('open', 'processing', 'ended');
 
 -- CreateEnum
-CREATE TYPE "ServiceStatus" AS ENUM ('active', 'inative');
+CREATE TYPE "ServiceStatus" AS ENUM ('active', 'inactive');
 
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('client', 'admin', 'technical');

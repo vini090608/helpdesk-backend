@@ -33,7 +33,7 @@ enum CallStatus {
 
 enum ServiceStatus {
   active
-  inative
+  inactive
 }
 
 enum Role {

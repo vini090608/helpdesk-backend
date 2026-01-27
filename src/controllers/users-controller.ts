@@ -105,9 +105,9 @@ export class UsersController{
 
         const {id} = paramsSchema.parse(req.params)
 
-        const user = await prisma.user.delete({where:{id}})
-
         const userCalls = await prisma.call.deleteMany({where:{clientId: id}})        
+        
+        const user = await prisma.user.delete({where:{id}})
 
         return res.status(202).json({message: "User deleted sucessfully", user, userCalls})
     }
