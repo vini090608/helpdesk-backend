@@ -59,7 +59,7 @@ export class CallsController{
             select: {
                 id:true ,title:true, describe:true, status:true, serviceName: true, serviceAmount:true, updatedAt: true,
                 client: {select: {name: true}},
-                technical: {select: {name: true}},
+                technical: {select: {name: true, email: true}},
             },
      })
         
@@ -78,7 +78,7 @@ export class CallsController{
             select: {
                 id:true ,title:true, describe:true, status:true, serviceName: true, serviceAmount:true, updatedAt: true,
                 client: {select: {name: true}},
-                technical: {select: {name: true}},
+                technical: {select: {name: true, email: true}},
             },
         })
 

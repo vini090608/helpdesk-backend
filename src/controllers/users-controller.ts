@@ -81,17 +81,19 @@ export class UsersController{
         const {id} = paramsSchema.parse(req.params)
         const {name, email, password, profile, hour} = bodySchema.parse(req.body)
 
-
         if (!name && !email && !password && !profile && hour === undefined) {
             throw new AppError("Please change something to update", 400)
         }
-
         
+        let hashedPassword: string | undefined
+        if (password) {
+            hashedPassword = await hash(password, 8)
+        }
 
         const user = await prisma.user.update({
             where: { id },
             data: {
-                name, email, password, profile, hour
+                name, email, password: hashedPassword, profile, hour
             }
         })
 
