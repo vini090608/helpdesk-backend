@@ -12,11 +12,13 @@ export class CallsController{
             service_amount: z.number().positive(),
             client_id: z.number(),
             technical_id: z.number().optional(),
-            service_name: z.string()
-            
+            service_name: z.string(),
+            services: z.array(z.string()).optional(),
+            amount: z.number().optional()
+
         })
 
-        const {title, describe, status, service_amount,client_id, technical_id,service_name} = bodySchema.parse(req.body)
+        const {title, describe, status, service_amount,client_id, technical_id,service_name, } = bodySchema.parse(req.body)
 
         if(status === "ended"){
             throw new AppError("This call has ended", 401)
@@ -28,7 +30,9 @@ export class CallsController{
                 serviceAmount: service_amount,
                 clientId: client_id, 
                 TechnicalId: technical_id,
-                serviceName: service_name
+                serviceName: service_name,
+                services: [service_name],
+                amount: service_amount
             }
         })
 
@@ -38,7 +42,7 @@ export class CallsController{
     async index(req: Request, res: Response){
      const calls = await prisma.call.findMany({
         select: {
-            id:true, title:true, describe:true, status:true, serviceName:true, serviceAmount:true, updatedAt: true,
+            id:true, title:true, describe:true, status:true, serviceName:true, serviceAmount:true, services: true, amount: true, updatedAt: true, createdAt: true, 
             client: {select: {name: true}},
             technical: {select: {name: true}},
         },
@@ -57,7 +61,7 @@ export class CallsController{
         const calls = await prisma.call.findMany({
             where: {clientId: id},
             select: {
-                id:true ,title:true, describe:true, status:true, serviceName: true, serviceAmount:true, updatedAt: true,
+                id:true ,title:true, describe:true, status:true, serviceName: true, serviceAmount:true, services: true, amount: true, updatedAt: true, createdAt: true,
                 client: {select: {name: true}},
                 technical: {select: {name: true, email: true}},
             },
@@ -76,9 +80,10 @@ export class CallsController{
         const calls = await prisma.call.findUnique({
             where: {id},
             select: {
-                id:true ,title:true, describe:true, status:true, serviceName: true, serviceAmount:true, updatedAt: true,
+                id:true ,title:true, describe:true, status:true, serviceName: true, serviceAmount:true, amount: true, updatedAt: true, createdAt: true,
                 client: {select: {name: true}},
                 technical: {select: {name: true, email: true}},
+                services: true
             },
         })
 
@@ -93,16 +98,17 @@ export class CallsController{
         const bodySchema = z.object({
             status: z.enum(["open", "processing", "ended"]).optional(),
             technical_id: z.number().optional(),
-
+            services: z.array(z.string()).optional(),
+            amount: z.number().optional()
         })
 
         const {id} = paramsSchema.parse(req.params)
 
-        const {status, technical_id} = bodySchema.parse(req.body)
+        const {status, technical_id, services, amount} = bodySchema.parse(req.body)
 
         const call = await prisma.call.updateMany({
             data:{
-                status,
+                status, services, amount,
                 TechnicalId: technical_id,
             },
             where:{

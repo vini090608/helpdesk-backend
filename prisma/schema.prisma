@@ -73,6 +73,8 @@ model Call {
   title       String
   describe    String
   status      CallStatus? @default(open)
+  services String[]
+  amount Float?
 
   serviceAmount Float @map("service_amount")
 
@@ -85,6 +87,7 @@ model Call {
   serviceNameCall   Service   @relation("serviceName", fields: [serviceName], references: [name])
 
   updatedAt  DateTime? @updatedAt() @map("updated_at")
+  createdAt  DateTime? @default(now()) @map("created_at")
 
   @@map("calls")
 }

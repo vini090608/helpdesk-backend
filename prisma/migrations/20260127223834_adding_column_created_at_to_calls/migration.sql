@@ -41,6 +41,7 @@ CREATE TABLE "calls" (
     "technical_id" INTEGER,
     "service_name" TEXT NOT NULL,
     "updated_at" TIMESTAMP(3),
+    "created_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "calls_pkey" PRIMARY KEY ("id")
 );
