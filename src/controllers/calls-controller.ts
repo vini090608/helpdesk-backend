@@ -13,7 +13,7 @@ export class CallsController{
             client_id: z.number(),
             technical_id: z.number().optional(),
             service_name: z.string(),
-            services: z.array(z.string()).optional(),
+            servicesArray: z.array(z.string()).optional(),
             amount: z.number().optional()
 
         })
@@ -31,7 +31,7 @@ export class CallsController{
                 clientId: client_id, 
                 TechnicalId: technical_id,
                 serviceName: service_name,
-                services: [service_name],
+                servicesArray: [service_name],
                 amount: service_amount
             }
         })
@@ -42,7 +42,7 @@ export class CallsController{
     async index(req: Request, res: Response){
      const calls = await prisma.call.findMany({
         select: {
-            id:true, title:true, describe:true, status:true, serviceName:true, serviceAmount:true, services: true, amount: true, updatedAt: true, createdAt: true, 
+            id:true, title:true, describe:true, status:true, serviceName:true, serviceAmount:true, servicesArray: true, amount: true, updatedAt: true, createdAt: true, 
             client: {select: {name: true}},
             technical: {select: {name: true}},
         },
@@ -61,7 +61,7 @@ export class CallsController{
         const calls = await prisma.call.findMany({
             where: {clientId: id},
             select: {
-                id:true ,title:true, describe:true, status:true, serviceName: true, serviceAmount:true, services: true, amount: true, updatedAt: true, createdAt: true,
+                id:true ,title:true, describe:true, status:true, serviceName: true, serviceAmount:true, servicesArray: true, amount: true, updatedAt: true, createdAt: true,
                 client: {select: {name: true}},
                 technical: {select: {name: true, email: true}},
             },
@@ -80,10 +80,9 @@ export class CallsController{
         const calls = await prisma.call.findUnique({
             where: {id},
             select: {
-                id:true ,title:true, describe:true, status:true, serviceName: true, serviceAmount:true, amount: true, updatedAt: true, createdAt: true,
+                id:true ,title:true, describe:true, status:true, serviceName: true, serviceAmount:true, servicesArray: true, amount: true, updatedAt: true, createdAt: true,
                 client: {select: {name: true}},
                 technical: {select: {name: true, email: true}},
-                services: true
             },
         })
 
@@ -98,18 +97,45 @@ export class CallsController{
         const bodySchema = z.object({
             status: z.enum(["open", "processing", "ended"]).optional(),
             technical_id: z.number().optional(),
-            services: z.array(z.string()).optional(),
-            amount: z.number().optional()
         })
 
         const {id} = paramsSchema.parse(req.params)
 
-        const {status, technical_id, services, amount} = bodySchema.parse(req.body)
+        const {status, technical_id, } = bodySchema.parse(req.body)
 
-        const call = await prisma.call.updateMany({
+        const call = await prisma.call.update({
             data:{
-                status, services, amount,
+                status ,
                 TechnicalId: technical_id,
+            },
+            where:{
+                id
+            }
+        })
+
+        return res.json(call)
+    }
+
+    async pricing(req: Request, res: Response){
+        const paramsSchema = z.object({
+            id: z.coerce.number()
+        })
+
+        const bodySchema = z.object({
+            amount: z.number().optional(),
+            servicesArray: z.array(z.string()).optional(),
+        })
+
+        const {id} = paramsSchema.parse(req.params)
+
+        const {servicesArray, amount} = bodySchema.parse(req.body)
+
+        const call = await prisma.call.update({
+            data:{
+                amount,
+                servicesArray:{
+                    push: servicesArray
+                }
             },
             where:{
                 id

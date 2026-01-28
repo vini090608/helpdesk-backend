@@ -15,6 +15,7 @@ callsRoutes.get("/:id", callsController.show)
 
 callsRoutes.get("/", ensureAuthenticated, verifyUserAuthorization(["admin", "technical"]), callsController.index)
 callsRoutes.patch("/:id", ensureAuthenticated, callsController.update)
+callsRoutes.patch("/pricing/:id", ensureAuthenticated, callsController.pricing)
 callsRoutes.delete("/:id", ensureAuthenticated, callsController.remove)
 
 export { callsRoutes }

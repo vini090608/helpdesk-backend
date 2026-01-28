@@ -36,6 +36,8 @@ CREATE TABLE "calls" (
     "title" TEXT NOT NULL,
     "describe" TEXT NOT NULL,
     "status" "CallStatus" DEFAULT 'open',
+    "services" TEXT[],
+    "amount" DOUBLE PRECISION,
     "service_amount" DOUBLE PRECISION NOT NULL,
     "client_id" INTEGER NOT NULL,
     "technical_id" INTEGER,

@@ -73,7 +73,7 @@ model Call {
   title       String
   describe    String
   status      CallStatus? @default(open)
-  services String[]
+  servicesArray String[]
   amount Float?
 
   serviceAmount Float @map("service_amount")
