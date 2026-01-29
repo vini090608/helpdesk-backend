@@ -8,6 +8,7 @@ datasource db {
 }
 
 enum BusinessHour {
+  H07
   H08
   H09 
   H10
@@ -23,6 +24,7 @@ enum BusinessHour {
   H20
   H21
   H22
+  H23
 }
 
 enum CallStatus {

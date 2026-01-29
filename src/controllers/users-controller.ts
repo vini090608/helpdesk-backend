@@ -11,7 +11,7 @@ export class UsersController{
             email: z.string().email(),
             password: z.string().min(6, {message: "Put a valid password"}),
             role: z.enum(["client", "technical", "admin"]).optional(),
-            hour: z.array(z.enum(["H08", "H09", "H10", "H11", "H12", "H13", "H14", "H15", "H16", "H17", "H18", "H19", "H20", "H21", "H22"])).optional()
+            hour: z.array(z.enum(["H07","H08", "H09", "H10", "H11", "H12", "H13", "H14", "H15", "H16", "H17", "H18", "H19", "H20", "H21", "H22","H23"])).optional()
         })
 
         const {name, email, password, role, hour} = bodySchema.parse(req.body)
