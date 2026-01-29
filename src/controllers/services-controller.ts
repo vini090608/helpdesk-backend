@@ -34,6 +34,27 @@ export class ServicesController{
         return res.json(services)
     }
 
+    async show(req:Request, res: Response){
+        const paramsSchema = z.object({
+            name: z.string()
+        })
+
+        const {name} = paramsSchema.parse(req.params)
+
+        const services = await prisma.service.findMany({
+            select: {
+                name: true,
+                amount: true,
+                status: true
+            },
+            where:{
+                name
+            }
+        })
+
+        return res.json({service: services})
+    }
+
     async update(req:Request, res: Response){
         const paramsSchema = z.object({
             name: z.string()
